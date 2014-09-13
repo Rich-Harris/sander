@@ -34,7 +34,8 @@ mkdirp( path.dirname( dest ), function ( err ) {
 ...write this:
 
 ```js
-require( 'sander' ).writeFile( basedir, filename, filecontents ).then( doTheNextThing );
+var sander = require( 'sander' );
+sander.writeFile( basedir, filename, filecontents ).then( doTheNextThing );
 ```
 
 
