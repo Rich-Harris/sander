@@ -24,7 +24,7 @@ var dest = path.resolve( basedir, filename );
 mkdirp( path.dirname( dest ), function ( err ) {
   if ( err ) throw err;
 
-  fs.writeFile( dest, filecontents, function ( err ) {
+  fs.writeFile( dest, data, function ( err ) {
     if ( err ) throw err;
     doTheNextThing();
   });
@@ -35,7 +35,7 @@ mkdirp( path.dirname( dest ), function ( err ) {
 
 ```js
 var sander = require( 'sander' );
-sander.writeFile( basedir, filename, filecontents ).then( doTheNextThing );
+sander.writeFile( basedir, filename, data ).then( doTheNextThing );
 ```
 
 
