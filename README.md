@@ -34,7 +34,7 @@ mkdirp( path.dirname( dest ), function ( err ) {
 ...write this:
 
 ```js
-require( 'sander' ).write( basedir, filename, filecontents ).then( doTheNextThing );
+require( 'sander' ).writeFile( basedir, filename, filecontents ).then( doTheNextThing );
 ```
 
 
@@ -55,9 +55,9 @@ When writing files and folders, intermediate folders are automatically created a
 Wherever appropriate, method arguments are joined together with `path.resolve()` - so the following are equivalent:
 
 ```js
-sander.read( 'foo', 'bar', 'baz' );
-sander.read( path.resolve( 'foo', 'bar', 'baz' ) );
-sander.read( 'foo/bar/baz' ); // or 'foo\bar\baz' on Windows
+sander.readFile( 'foo', 'bar', 'baz' );
+sander.readFile( path.resolve( 'foo', 'bar', 'baz' ) );
+sander.readFile( 'foo/bar/baz' ); // or 'foo\bar\baz' on Windows
 ```
 
 ### Methods that involve two paths
