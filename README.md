@@ -79,7 +79,7 @@ In addition to the extra methods (listed below), all `fs` methods have `sander` 
 
 For more information about what these methods do, consult the [node documentation](http://nodejs.org/api/fs.html).
 
-In the list below, `...paths` indicates you can use one or more strings in sequence, as per the automatic path resolution convention. An `fd` argument refers to a file descriptor, which you'd generate with `sander.open()` or `sander.openSync()`. Arguments wrapped in `[]` characters are optional.
+In the list below, `...paths` indicates you can use one or more strings in sequence, as per the [automatic path resolution](#automatic-path-resolution) convention. An `fd` argument refers to a file descriptor, which you'd generate with `sander.open()` or `sander.openSync()`. Arguments wrapped in `[]` characters are optional.
 
 ```js
 sander.appendFile(...paths, data, [options])
