@@ -74,7 +74,7 @@ sander.rename( basedir, oldname ).to( basedir, newname );
 
 ### `fs` methods
 
-In addition to the extra methods (listed below), all `fs` methods except `watch` and `watchFile`) have `sander` equivalents. The synchronous methods (those ending `Sync`) are the same as the `fs` originals except that path resolution and intermediate folder creation are automatically handled (see [conventions](#conventions), above). All async methods return a promise.
+In addition to the extra methods (listed below), all `fs` methods except `watch`/`watchFile`/`unwatchFile`/`createReadStream`/`createWriteStream` have `sander` equivalents. The synchronous methods (those ending `Sync`) are the same as the `fs` originals except that path resolution and intermediate folder creation are automatically handled (see [conventions](#conventions), above). All async methods return a promise.
 
 For more information about what these methods to, consult the [node documentation](http://nodejs.org/api/fs.html).
 
