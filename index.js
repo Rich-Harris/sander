@@ -6,16 +6,25 @@ var path = require( 'path' ),
 	sander = exports,
 
 	standardMethods,
-	fileDescriptorMethods;
+	fileDescriptorMethods,
+	specialMethods;
 
-standardMethods = 'truncate chown lchown chmod lchmod stat lstat readlink realpath unlink rmdir readdir utimes readFile'.split( ' ' );
-fileDescriptorMethods = 'close ftruncate fchown fchmod fstat futimes fsync read'.split( ' ' );
+standardMethods = 'chmod chown createReadStream createWriteStream exists lchmod lchown lstat readdir readFile readlink realpath rmdir stat truncate unlink utimes unwatchFile watch watchFile'.split( ' ' );
+fileDescriptorMethods = 'close fchmod fchown fstat fsync ftruncate futimes read'.split( ' ' );
+
+specialMethods = 'createReadStream createWriteStream unwatchFile watch watchFile'.split( ' ' );
 
 standardMethods.forEach( function ( methodName ) {
 	[ true, false ].forEach( function ( isSync ) {
-		var qualifiedMethodName, method;
+		var qualifiedMethodName, method, isSpecial;
 
-		qualifiedMethodName = isSync ? methodName + 'Sync' : methodName;
+		isSpecial = ~specialMethods.indexOf( methodName );
+
+		if ( isSpecial && !isSync ) {
+			return;
+		}
+
+		qualifiedMethodName = ( isSync && !isSpecial ) ? methodName + 'Sync' : methodName;
 
 		method = function () {
 			var buildingPath = true,
@@ -333,6 +342,32 @@ fileDescriptorMethods.forEach( function ( methodName ) {
 	};
 
 	sander[ qualifiedMethodName ] = method;
+});
+
+[ 'createReadStream', 'createWriteStream' ].forEach( function ( methodName ) {
+	sander[ methodName ] = function () {
+		var options, pathargs, i, filepath;
+
+		if ( typeof arguments[ arguments.length - 1 ] === 'object' ) {
+			options = arguments[ arguments.length - 1 ];
+
+			i = arguments.length - 1;
+			pathargs = [];
+			while ( i-- ) {
+				pathargs[i] = arguments[i];
+			}
+		} else {
+			pathargs = arguments;
+		}
+
+		filepath = resolve( pathargs );
+
+		if ( methodName === 'createWriteStream' ) {
+			mkdirp.sync( path.dirname( filepath ) );
+		}
+
+		return fs[ methodName ]( filepath, options );
+	};
 });
 
 /* Extra methods */

@@ -74,11 +74,11 @@ sander.rename( basedir, oldname ).to( basedir, newname );
 
 ### `fs` methods
 
-In addition to the extra methods (listed below), all `fs` methods except `watch`/`watchFile`/`unwatchFile`/`createReadStream`/`createWriteStream` have `sander` equivalents. The synchronous methods (those ending `Sync`) are the same as the `fs` originals except that path resolution and intermediate folder creation are automatically handled (see [conventions](#conventions), above). All async methods return a promise.
+In addition to the extra methods (listed below), all `fs` methods have `sander` equivalents. The synchronous methods (those ending `Sync`) are the same as the `fs` originals except that path resolution and intermediate folder creation are automatically handled (see [conventions](#conventions), above). All async methods return a promise.
 
 For more information about what these methods do, consult the [node documentation](http://nodejs.org/api/fs.html).
 
-In the list below, `...paths` indicates you can use one or more strings in sequence, as per the automatic path resolution convention. An `fd` argument refers to a file descriptor, which you'd generate with `sander.open()` or `sander.openSync()`.
+In the list below, `...paths` indicates you can use one or more strings in sequence, as per the automatic path resolution convention. An `fd` argument refers to a file descriptor, which you'd generate with `sander.open()` or `sander.openSync()`. Arguments wrapped in `[]` characters are optional.
 
 ```js
 sander.appendFile(...paths, data, [options])
@@ -89,6 +89,10 @@ sander.chown(...paths, uid, gid)
 sander.chownSync(...paths, uid, gid)
 sander.close(fd)
 sander.closeSync(fd)
+sander.createReadStream(...paths, [options])
+sander.createWriteStream(...paths, [options])
+sander.exists(...paths)
+sander.existsSync(...paths)
 sander.fchmod(fd, {mode: mode})
 sander.fchmodSync(fd, {mode: mode})
 sander.fchown(fd, uid, gid)
@@ -137,6 +141,9 @@ sander.unlink(...paths)
 sander.unlinkSync(...paths)
 sander.utimes(...paths, atime, mtime)
 sander.utimesSync(...paths, atime, mtime)
+sander.unwatchFile(...paths, [listener])
+sander.watch(...paths, [options], [listener])
+sander.watchFile(...paths, [options], listener)
 sander.write(fd, buffer, offset, length, position)
 sander.writeSync(fd, buffer, offset, length, position)
 sander.writeFile(...paths, data, [options])
