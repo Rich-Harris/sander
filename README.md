@@ -43,7 +43,7 @@ sander.writeFile( basedir, filename, data ).then( doTheNextThing );
 
 ### Promises
 
-All methods return a Promise. If you're not familiar with Promises, [read up on them on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) - they're coming in ES6 and are already supported in many browsers, and I guarantee they'll make your life easier.
+All async methods (those whose `fs` equivalents would take a callback, e.g. `sander.readFile`) return a Promise. If you're not familiar with Promises, [read up on them on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) - they're coming in ES6 and are already supported in many browsers, and I guarantee they'll make your life easier.
 
 (Node doesn't natively support promises yet - we're using [es6-promise](https://github.com/jakearchibald/es6-promise) for maximum compatibility. For convenience, the `Promise` constructor is exposed as `sander.Promise`.)
 
