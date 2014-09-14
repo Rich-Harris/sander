@@ -159,11 +159,15 @@ Note that with the `chmod`/`fchmod`/`lchmod`/`symlink`/`mkdir`/`open` methods (a
 ```js
 // Copy a file using streams. `readOptions` is passed to `fs.createReadStream`,
 // while `writeOptions` is passed to `fs.createWriteStream`
-sander.copyFile(...paths, [readOptions]).to(...paths, [writeOptions]);
+sander.copyFile(...paths, [readOptions]).to(...paths, [writeOptions])
 
 // Copy a file synchronously. `readOptions`, is passed to `fs.readFileSync`,
 // while `writeOptions` is passed to `fs.writeFileSync`
-sander.copyFileSync(...paths, [readOptions]).to(...paths, [writeOptions]);
+sander.copyFileSync(...paths, [readOptions]).to(...paths, [writeOptions])
+
+// List contents of a folder, recursively
+sander.lsr(...paths)
+sander.lsrSync(...paths)
 ```
 
 More extras coming soon, e.g. `copydir`/`copydirSync`/`rimraf`/`rimrafSync`.

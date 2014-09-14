@@ -446,14 +446,90 @@ fileDescriptorMethods.forEach( function ( methodName ) {
 	sander[ qualifiedMethodName ] = method;
 });
 
+sander.lsr = function () {
+	var basedir = resolve( arguments );
+
+	return new Promise( function ( fulfil, reject ) {
+		var result = [];
+
+		processdir( basedir, function ( err ) {
+			if ( err ) {
+				reject( err );
+			} else {
+				fulfil( result );
+			}
+		});
+
+		function processdir ( dir, cb ) {
+			fs.readdir( dir, function ( err, files ) {
+				var remaining, check;
+
+				if ( err ) {
+					cb( err );
+				} else {
+					remaining = files.length;
+
+					if ( !remaining ) {
+						return cb();
+					}
+
+					files = files.map( function ( file ) {
+						return dir + path.sep + file;
+					});
+
+					check = function ( err ) {
+						if ( err ) {
+							cb( err );
+						}
+
+						else if ( !--remaining ) {
+							cb();
+						}
+					};
+
+					files.forEach( function ( file ) {
+						fs.stat( file, function ( err, stats ) {
+							if ( err ) {
+								cb( err );
+							} else {
+								if ( stats.isDirectory() ) {
+									processdir( file, check );
+								} else {
+									result.push( file.replace( basedir + path.sep, '' ) );
+									check();
+								}
+							}
+						});
+					});
+				}
+			});
+		}
+	});
+};
+
+sander.lsrSync = function () {
+	var basedir = resolve( arguments ), result = [];
+
+	processdir( basedir );
+	return result;
+
+	function processdir ( dir ) {
+		fs.readdirSync( dir ).forEach( function ( file ) {
+			var filepath = dir + path.sep + file;
+
+			if ( fs.statSync( filepath ).isDirectory() ) {
+				processdir( filepath );
+			} else {
+				result.push( filepath.replace( basedir + path.sep, '' ) );
+			}
+		});
+	}
+};
+
 
 sander.Promise = Promise;
 
 
 function resolve ( pathargs ) {
-	if ( pathargs.length === 1 ) {
-		return pathargs[0];
-	}
-
 	return path.resolve.apply( null, pathargs );
 }
