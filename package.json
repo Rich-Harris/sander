@@ -2,10 +2,11 @@
   "name": "sander",
   "description": "Promise-based power tool for common filesystem tasks",
   "author": "Rich Harris",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": {
     "es6-promise": "^1.0.0",
-    "mkdirp": "^0.5.0"
+    "mkdirp": "^0.5.0",
+    "rimraf": "^2.2.8"
   },
   "main": "lib/index.js"
 }

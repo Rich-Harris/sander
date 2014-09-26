@@ -2,6 +2,7 @@ var path = require( 'path' ),
 	fs = require( 'fs' ),
 	Promise = require( 'es6-promise' ).Promise,
 	mkdirp = require( 'mkdirp' ),
+	rimraf = require( 'rimraf' ),
 
 	sander = exports,
 
@@ -446,6 +447,7 @@ fileDescriptorMethods.forEach( function ( methodName ) {
 	sander[ qualifiedMethodName ] = method;
 });
 
+// sander.lsr, sander.lsrSync
 sander.lsr = function () {
 	var basedir = resolve( arguments );
 
@@ -526,6 +528,22 @@ sander.lsrSync = function () {
 	}
 };
 
+// sander.rimraf, sander.rimrafSync
+sander.rimraf = function () {
+	return new Promise( function ( fulfil, reject ) {
+		rimraf( resolve( arguments ), function ( err ) {
+			if ( err ) {
+				reject( err );
+			} else {
+				fulfil();
+			}
+		});
+	});
+};
+
+sander.rimrafSync = function () {
+	rimraf.sync( resolve( arguments ) );
+};
 
 sander.Promise = Promise;
 
