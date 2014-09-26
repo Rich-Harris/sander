@@ -652,8 +652,10 @@ sander.lsrSync = function () {
 
 // sander.rimraf, sander.rimrafSync
 sander.rimraf = function () {
+	var target = resolve( arguments );
+
 	return new Promise( function ( fulfil, reject ) {
-		rimraf( resolve( arguments ), function ( err ) {
+		rimraf( target, function ( err ) {
 			if ( err ) {
 				reject( err );
 			} else {
