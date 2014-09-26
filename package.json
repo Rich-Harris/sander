@@ -8,5 +8,8 @@
     "mkdirp": "^0.5.0",
     "rimraf": "^2.2.8"
   },
-  "main": "lib/index.js"
+  "main": "lib/index.js",
+  "devDependencies": {
+    "buffer-crc32": "^0.2.3"
+  }
 }
