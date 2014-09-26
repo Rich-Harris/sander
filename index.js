@@ -373,7 +373,7 @@ fileDescriptorMethods.forEach( function ( methodName ) {
 
 /* Extra methods */
 
-// sander.copy, sander.copySync
+// sander.copyFile, sander.copyFileSync
 [ true, false ].forEach( function ( isSync ) {
 	var qualifiedMethodName, method;
 
@@ -438,6 +438,128 @@ fileDescriptorMethods.forEach( function ( methodName ) {
 
 							readStream.pipe( writeStream );
 						}
+					});
+				});
+			}
+		};
+	};
+
+	sander[ qualifiedMethodName ] = method;
+});
+
+// sander.copydir, sander.copydirSync
+[ true, false ].forEach( function ( isSync ) {
+	var qualifiedMethodName, method;
+
+	qualifiedMethodName = isSync ? 'copydirSync' : 'copydir';
+
+	method = function () {
+		var src, readOptions, pathargs, i;
+
+		if ( typeof arguments[ arguments.length - 1 ] === 'object' ) {
+			readOptions = arguments[ arguments.length - 1 ];
+
+			i = arguments.length - 1;
+			pathargs = [];
+			while ( i-- ) {
+				pathargs[i] = arguments[i];
+			}
+		} else {
+			pathargs = arguments;
+		}
+
+		src = resolve( pathargs );
+
+		return {
+			to: function () {
+				var dest, writeOptions, pathargs, i, copydir;
+
+				if ( typeof arguments[ arguments.length - 1 ] === 'object' ) {
+					writeOptions = arguments[ arguments.length - 1 ];
+
+					i = arguments.length - 1;
+					pathargs = [];
+					while ( i-- ) {
+						pathargs[i] = arguments[i];
+					}
+				} else {
+					pathargs = arguments;
+				}
+
+				dest = resolve( pathargs );
+
+				if ( isSync ) {
+					copydir = function ( src, dest ) {
+						mkdirp.sync( dest );
+
+						fs.readdirSync( src ).forEach( function ( filename ) {
+							var srcpath = src + path.sep + filename,
+								destpath = dest + path.sep + filename;
+
+							if ( fs.statSync( srcpath ).isDirectory() ) {
+								return copydir( srcpath, destpath );
+							}
+
+							data = fs.readFileSync( srcpath, readOptions );
+							fs.writeFileSync( destpath, data, writeOptions );
+						});
+					};
+
+					return copydir( src, dest );
+				}
+
+				copydir = function ( src, dest, cb ) {
+					mkdirp( dest, function ( err ) {
+						if ( err ) return cb( err );
+
+						fs.readdir( src, function ( err, files ) {
+							var remaining,
+								check;
+
+							if ( err ) return cb( err );
+
+							remaining = files.length;
+
+							check = function ( err ) {
+								if ( err ) {
+									return cb( err );
+								}
+
+								if ( !--remaining ) {
+									cb();
+								}
+							};
+
+							files.forEach( function ( filename ) {
+								var srcpath = src + path.sep + filename,
+									destpath = dest + path.sep + filename;
+
+								fs.stat( srcpath, function ( err, stats ) {
+									var readStream, writeStream;
+
+									if ( stats.isDirectory() ) {
+										return copydir( srcpath, destpath, check );
+									}
+
+									readStream = fs.createReadStream( srcpath, readOptions );
+									writeStream = fs.createWriteStream( destpath, writeOptions );
+
+									readStream.on( 'error', cb );
+									writeStream.on( 'error', cb );
+
+									writeStream.on( 'close', check );
+
+									readStream.pipe( writeStream );
+								});
+							});
+						});
+					});
+				};
+
+				return new Promise( function ( fulfil, reject ) {
+					copydir( src, dest, function ( err ) {
+						if ( err ) return reject( err );
+						fulfil();
 					});
 				});
 			}
