@@ -10,7 +10,7 @@ var path = require( 'path' ),
 	fileDescriptorMethods,
 	specialMethods;
 
-standardMethods = 'chmod chown createReadStream createWriteStream exists lchmod lchown lstat readdir readFile readlink realpath rmdir stat truncate unlink utimes unwatchFile watch watchFile'.split( ' ' );
+standardMethods = 'chmod chown createReadStream createWriteStream lchmod lchown lstat readdir readFile readlink realpath rmdir stat truncate unlink utimes unwatchFile watch watchFile'.split( ' ' );
 fileDescriptorMethods = 'close fchmod fchown fstat fsync ftruncate futimes read'.split( ' ' );
 
 specialMethods = 'createReadStream createWriteStream unwatchFile watch watchFile'.split( ' ' );
@@ -667,6 +667,21 @@ sander.rimraf = function () {
 
 sander.rimrafSync = function () {
 	rimraf.sync( resolve( arguments ) );
+};
+
+// sander.exists, sander.existsSync
+sander.exists = function () {
+	var target = resolve( arguments );
+
+	return new Promise( function ( fulfil ) {
+		fs.exists( target, function ( exists ) {
+			fulfil( exists );
+		});
+	});
+};
+
+sander.existsSync = function () {
+	return fs.existsSync( resolve( arguments ) );
 };
 
 sander.Promise = Promise;
