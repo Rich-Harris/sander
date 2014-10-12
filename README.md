@@ -165,12 +165,19 @@ sander.copyFile(...paths, [readOptions]).to(...paths, [writeOptions])
 // while `writeOptions` is passed to `fs.writeFileSync`
 sander.copyFileSync(...paths, [readOptions]).to(...paths, [writeOptions])
 
-// List contents of a folder, recursively
+// Copy a directory, recursively. `readOptions` and `writeOptions` are
+// treated as per `sander.copyFile[Sync]`
+sander.copydir(...paths, [readOptions]).to(...paths, [writeOptions])
+sander.copydirSync(...paths, [readOptions]).to(...paths, [writeOptions])
+
+// List contents of a directory, recursively
 sander.lsr(...paths)
 sander.lsrSync(...paths)
-```
 
-More extras coming soon, e.g. `copydir`/`copydirSync`/`rimraf`/`rimrafSync`.
+// Remove a directory and its contents
+sander.rimraf(...paths)
+sander.rimrafSync(...paths)
+```
 
 
 ### License
