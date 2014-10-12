@@ -120,17 +120,25 @@ fileDescriptorMethods.forEach( function ( methodName ) {
 					var dest = resolve( arguments );
 
 					if ( isSync ) {
+						mkdirp.sync( path.dirname( dest ) );
 						return fs[ qualifiedMethodName ]( src, dest );
 					}
 
 					return new Promise( function ( fulfil, reject ) {
-						fs[ qualifiedMethodName ]( src, dest, function ( err, result ) {
+						mkdirp( path.dirname( dest ), function ( err ) {
 							if ( err ) {
 								reject( err );
 							} else {
-								fulfil();
+								fs[ qualifiedMethodName ]( src, dest, function ( err, result ) {
+									if ( err ) {
+										reject( err );
+									} else {
+										fulfil();
+									}
+								});
 							}
 						});
+
 					});
 				}
 			};
