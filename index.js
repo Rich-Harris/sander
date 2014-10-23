@@ -1,5 +1,5 @@
 var path = require( 'path' ),
-	fs = require( 'fs' ),
+	fs = require( 'graceful-fs' ),
 	Promise = require( 'es6-promise' ).Promise,
 	mkdirp = require( 'mkdirp' ),
 	rimraf = require( 'rimraf' ),
