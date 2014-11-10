@@ -528,6 +528,8 @@ fileDescriptorMethods.forEach( function ( methodName ) {
 
 							remaining = files.length;
 
+							if ( !remaining ) return cb();
+
 							check = function ( err ) {
 								if ( err ) {
 									return cb( err );
