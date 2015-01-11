@@ -38,6 +38,8 @@ var sander = require( 'sander' );
 sander.writeFile( basedir, filename, data ).then( doTheNextThing );
 ```
 
+It uses [graceful-fs](https://github.com/isaacs/node-graceful-fs) rather than the built-in `fs` module, to eliminate [EMFILE](http://blog.izs.me/post/56827866110/wtf-is-emfile-and-why-does-it-happen-to-me) from the list of things you have to worry about.
+
 
 ## Conventions
 
