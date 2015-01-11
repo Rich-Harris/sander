@@ -12,5 +12,8 @@
   "main": "lib/index.js",
   "devDependencies": {
     "buffer-crc32": "^0.2.3"
+  },
+  "scripts": {
+    "test": "node test/index.js"
   }
 }
