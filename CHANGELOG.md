@@ -1,5 +1,9 @@
 # changelog
 
+## 0.2.2-0.2.3
+
+* Appeasing the npm gods
+
 ## 0.2.1
 
 * `sander.copydir()` no longer fails with empty directories
