@@ -310,47 +310,47 @@ fileDescriptorMethods.forEach( function ( methodName ) {
 	sander[ qualifiedMethodName ] = method;
 });
 
-// sander.writeFile and sander.writeFileSync
-[ true, false ].forEach( function ( isSync ) {
-	var qualifiedMethodName, method;
+// sander.[write|append]File[Sync?]
+[ 'writeFile', 'appendFile' ].forEach( function ( methodName ) {
+	[ true, false ].forEach( function ( isSync ) {
+		var qualifiedMethodName = methodName + ( isSync ? 'Sync' : '' );
 
-	qualifiedMethodName = isSync ? 'writeFileSync' : 'writeFile';
+		function method () {
+			var data, pathargs = [], i, dest;
 
-	method = function () {
-		var data, pathargs = [], i, dest;
+			i = arguments.length;
+			data = arguments[ --i ];
 
-		i = arguments.length;
-		data = arguments[ --i ];
+			while ( i-- ) {
+				pathargs[i] = arguments[i];
+			}
 
-		while ( i-- ) {
-			pathargs[i] = arguments[i];
-		}
+			dest = resolve( pathargs );
 
-		dest = resolve( pathargs );
+			if ( isSync ) {
+				mkdirp.sync( path.dirname( dest ) );
+				return fs[ qualifiedMethodName ]( dest, data );
+			}
 
-		if ( isSync ) {
-			mkdirp.sync( path.dirname( dest ) );
-			return fs.writeFileSync( dest, data );
-		}
-
-		return new Promise( function ( fulfil, reject ) {
-			mkdirp( path.dirname( dest ), function ( err ) {
-				if ( err ) {
-					reject( err );
-				} else {
-					fs.writeFile( dest, data, function ( err ) {
-						if ( err ) {
-							reject( err );
-						} else {
-							fulfil();
-						}
-					});
-				}
+			return new Promise( function ( fulfil, reject ) {
+				mkdirp( path.dirname( dest ), function ( err ) {
+					if ( err ) {
+						reject( err );
+					} else {
+						fs[ qualifiedMethodName ]( dest, data, function ( err ) {
+							if ( err ) {
+								reject( err );
+							} else {
+								fulfil();
+							}
+						});
+					}
+				});
 			});
-		});
-	};
+		};
 
-	sander[ qualifiedMethodName ] = method;
+		sander[ qualifiedMethodName ] = method;
+	});
 });
 
 [ 'createReadStream', 'createWriteStream' ].forEach( function ( methodName ) {

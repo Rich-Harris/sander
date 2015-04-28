@@ -1,17 +1,37 @@
-var fs = require( 'fs' ),
-	path = require( 'path' ),
-	crc32 = require( 'buffer-crc32' ),
-	sander = require( '../' );
+var fs = require( 'fs' );
+var path = require( 'path' );
+var assert = require( 'assert' );
+var crc32 = require( 'buffer-crc32' );
+var sander = require( '../' );
 
-sander.rimrafSync( __dirname, 'output' );
+process.chdir( __dirname );
+
+sander.rimrafSync( 'output' );
 
 tests = [
 	{
 		name: 'copydir',
 		test: function () {
-			return sander.copydir( __dirname, 'input', 'dir' ).to( __dirname, 'output', '1' ).then( function () {
-				checkEquality([ __dirname, 'input', 'dir' ], [ __dirname, 'output', '1' ]);
+			return sander.copydir( 'input', 'dir' ).to( 'output', '1' ).then( function () {
+				checkEquality([ 'input', 'dir' ], [ 'output', '1' ]);
 			});
+		}
+	},
+
+	{
+		name: 'appendFile',
+		test: function () {
+			return sander.writeFile( 'output/2/test.txt', 'first line' )
+				.then( function () {
+					return sander.appendFile( 'output/2/test.txt', '\nsecond line' )
+				})
+				.then( function () {
+					return sander.readFile( 'output/2/test.txt' )
+						.then( String )
+						.then( function ( combined ) {
+							assert.equal( combined, 'first line\nsecond line' );
+						});
+				});
 		}
 	}
 ];
@@ -50,16 +70,12 @@ function checkEquality ( a, b ) {
 	statsB = fs.statSync( b );
 
 	if ( statsA.isDirectory() ) {
-		if ( !statsB.isDirectory() ) {
-			throw new Error( a + ' is a directory but ' + b + ' is not' );
-		}
+		assert.ok( statsB.isDirectory(),  a + ' is a directory but ' + b + ' is not' );
 
 		filesA = fs.readdirSync( a );
 		filesB = fs.readdirSync( b );
 
-		if ( !compareArrays( filesA, filesB ) ) {
-			throw new Error( 'Directory contents differ: ' + a + ', ' + b );
-		}
+		assert.ok( compareArrays( filesA, filesB ) );
 
 		i = filesA.length;
 		while ( i-- ) {
@@ -71,9 +87,7 @@ function checkEquality ( a, b ) {
 		crcA = crc32( fs.readFileSync( a ) );
 		crcB = crc32( fs.readFileSync( b ) );
 
-		if ( crcA.toString() !== crcB.toString() ) {
-			throw new Error( 'File contents differ' );
-		}
+		assert.equal( crcA.toString(), crcB.toString() );
 	}
 }
 
