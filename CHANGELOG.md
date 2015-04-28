@@ -1,5 +1,9 @@
 # changelog
 
+## 0.2.4
+
+* Add `appendFile` and `appendFileSync` methods ([#2](https://github.com/Rich-Harris/sander/issues/2))
+
 ## 0.2.2-0.2.3
 
 * Appeasing the npm gods
