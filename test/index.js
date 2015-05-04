@@ -6,59 +6,49 @@ var sander = require( '../' );
 
 process.chdir( __dirname );
 
-sander.rimrafSync( 'output' );
+describe( 'sander', function () {
+	beforeEach( function () {
+		return sander.rimraf( 'output' );
+	});
 
-tests = [
-	{
-		name: 'copydir',
-		test: function () {
-			return sander.copydir( 'input', 'dir' ).to( 'output', '1' ).then( function () {
-				checkEquality([ 'input', 'dir' ], [ 'output', '1' ]);
+	describe( 'copydir', function () {
+		it( 'copies a directory', function () {
+			return sander.copydir( 'input', 'dir' ).to( 'output' ).then( function () {
+				checkEquality([ 'input', 'dir' ], [ 'output' ]);
 			});
-		}
-	},
+		});
 
-	{
-		name: 'appendFile',
-		test: function () {
-			return sander.writeFile( 'output/2/test.txt', 'first line' )
+		it( 'copies a directory synchronously', function () {
+			sander.copydirSync( 'input', 'dir' ).to( 'output' );
+			checkEquality([ 'input', 'dir' ], [ 'output' ]);
+		});
+	});
+
+	describe( 'appendFile', function () {
+		it( 'appends to a file', function () {
+			return sander.writeFile( 'output/test.txt', 'first line' )
 				.then( function () {
-					return sander.appendFile( 'output/2/test.txt', '\nsecond line' )
+					return sander.appendFile( 'output/test.txt', '\nsecond line' )
 				})
 				.then( function () {
-					return sander.readFile( 'output/2/test.txt' )
+					return sander.readFile( 'output/test.txt' )
 						.then( String )
 						.then( function ( combined ) {
 							assert.equal( combined, 'first line\nsecond line' );
 						});
 				});
-		}
-	}
-];
-
-runNextTest();
-
-function runNextTest () {
-	var test = tests.shift(),
-		promise;
-
-	if ( !test ) {
-		console.log( 'done' );
-		return;
-	}
-
-	promise = test.test();
-
-	if ( promise && typeof promise.then === 'function' ) {
-		promise.then( runNextTest ).catch( function ( err ) {
-			setTimeout( function () {
-				throw err;
-			});
 		});
-	} else {
-		runNextTest();
-	}
-}
+
+		it( 'appends to a file synchronously', function () {
+			sander.writeFileSync( 'output/test.txt', 'first line' );
+			sander.appendFileSync( 'output/test.txt', '\nsecond line' );
+
+			var combined = sander.readFileSync( 'output/test.txt' ).toString();
+			assert.equal( combined, 'first line\nsecond line' );
+		});
+	});
+});
+
 
 function checkEquality ( a, b ) {
 	var statsA, statsB, filesA, filesB, crcA, crcB;
