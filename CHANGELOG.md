@@ -1,5 +1,10 @@
 # changelog
 
+## 0.3.0
+
+* Rewrote as ES6 modules
+* Added `symlinkOrCopy` and `symlinkOrCopySync` methods, inspired by [symlink-or-copy](https://github.com/broccolijs/node-symlink-or-copy)
+
 ## 0.2.4
 
 * Add `appendFile` and `appendFileSync` methods ([#2](https://github.com/Rich-Harris/sander/issues/2))

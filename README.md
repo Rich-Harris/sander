@@ -179,6 +179,11 @@ sander.lsrSync(...paths)
 // Remove a directory and its contents
 sander.rimraf(...paths)
 sander.rimrafSync(...paths)
+
+// Symlink a file or directory, unless we're on Windows in which
+// case fall back to copying to avoid permissions issues
+sander.symlinkOrCopy(...paths).to(...paths);
+sander.symlinkOrCopySync(...paths).to(...paths);
 ```
 
 

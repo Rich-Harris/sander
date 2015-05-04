@@ -11,6 +11,33 @@ describe( 'sander', function () {
 		return sander.rimraf( 'output' );
 	});
 
+	describe( 'readFile', function () {
+		it( 'reads a file', function () {
+			return sander.readFile( 'input', 'dir', 'text.txt' )
+				.then( String )
+				.then( function ( data ) {
+					assert.equal( data, fs.readFileSync( 'input/dir/text.txt', 'utf-8' ) );
+				});
+		});
+
+		it( 'reads a file synchronously', function () {
+			var data = sander.readFileSync( 'input', 'dir', 'text.txt' ).toString();
+			assert.equal( data, fs.readFileSync( 'input/dir/text.txt', 'utf-8' ) );
+		});
+
+		it( 'reads a file with encoding', function () {
+			return sander.readFile( 'input', 'dir', 'text.txt', { encoding: 'utf-8' })
+				.then( function ( data ) {
+					assert.equal( data, fs.readFileSync( 'input/dir/text.txt', 'utf-8' ) );
+				});
+		});
+
+		it( 'reads a file synchronously with encoding', function () {
+			var data = sander.readFileSync( 'input', 'dir', 'text.txt', { encoding: 'utf-8' });
+			assert.equal( data, fs.readFileSync( 'input/dir/text.txt', 'utf-8' ) );
+		});
+	});
+
 	describe( 'copydir', function () {
 		it( 'copies a directory', function () {
 			return sander.copydir( 'input', 'dir' ).to( 'output' ).then( function () {
@@ -46,6 +73,31 @@ describe( 'sander', function () {
 			var combined = sander.readFileSync( 'output/test.txt' ).toString();
 			assert.equal( combined, 'first line\nsecond line' );
 		});
+	});
+
+	describe( 'symlinkOrCopy', function () {
+		it( 'symlinks a directory', function () {
+			return sander.symlinkOrCopy( 'input', 'dir' ).to( 'output' )
+				.then( function () {
+					var stats = fs.statSync( 'output' );
+					assert.ok( stats.isDirectory() );
+
+					var lstats = fs.lstatSync( 'output' );
+					assert.ok( lstats.isSymbolicLink() );
+				});
+		});
+
+		it( 'symlinks a directory synchronously', function () {
+			sander.symlinkOrCopySync( 'input', 'dir' ).to( 'output' );
+
+			var stats = fs.statSync( 'output' );
+			assert.ok( stats.isDirectory() );
+
+			var lstats = fs.lstatSync( 'output' );
+			assert.ok( lstats.isSymbolicLink() );
+		});
+
+		// TODO override environment so that it thinks we're in Windows and copies instead...
 	});
 });
 
