@@ -155,6 +155,8 @@ sander.writeFileSync(...paths, data, [options])
 
 Note that with the `chmod`/`fchmod`/`lchmod`/`symlink`/`mkdir`/`open` methods (and their synchronous equivalents), the `mode` and `type` arguments must be passed as objects with a `mode` or `type` property. This is so that sander knows which arguments should be treated as parts of a path (because they're strings) and which shouldn't.
 
+The same is true for methods like `readFile` - whereas in node you can do `fs.readFile('path/to/file.txt', 'utf-8')` if you want to specify utf-8 encoding, with sander the final argument should be a `{encoding: 'utf-8'}` object.
+
 
 ### Extra methods
 
