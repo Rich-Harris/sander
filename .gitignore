@@ -2,3 +2,5 @@
 node_modules
 sandbox
 test/output
+.gobble*
+dist
