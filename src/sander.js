@@ -74,6 +74,7 @@ export { copydir, copydirSync } from './extraMethods/copydir';
 export { copyFile, copyFileSync } from './extraMethods/copyFile';
 export { lsr, lsrSync } from './extraMethods/lsr';
 export { rimraf, rimrafSync } from './extraMethods/rimraf';
+export { symlinkOrCopy, symlinkOrCopySync } from './extraMethods/symlinkOrCopy';
 
 // expose Promise for convenience
 // https://github.com/esperantojs/esperanto/issues/161

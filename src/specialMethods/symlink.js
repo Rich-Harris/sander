@@ -7,7 +7,7 @@ export function symlink () {
 
 	return {
 		to () {
-			const { options, resolved: dest } = resolvePathAndOptions( arguments );
+			const { options, resolvedPath: dest } = resolvePathAndOptions( arguments );
 
 			return new Promise( ( fulfil, reject ) => {
 				fs.symlink( src, dest, options.type, err => {
@@ -27,7 +27,7 @@ export function symlinkSync () {
 
 	return {
 		to () {
-			const { options, resolved: dest } = resolvePathAndOptions( arguments );
+			const { options, resolvedPath: dest } = resolvePathAndOptions( arguments );
 			return fs.symlinkSync( src, dest, options.type );
 		}
 	};
