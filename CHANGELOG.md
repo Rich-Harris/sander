@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.2
+
+* Create intermediate directories when symlinking
+
 ## 0.3.1
 
 * Include dist files in npm package. (Whoops!)
