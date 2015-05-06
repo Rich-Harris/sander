@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'graceful-fs';
 import * as es6Promise from 'es6-promise';
 import { syncMethod, asyncMethod } from './methodMakers/standardMethod';
 import { asyncFileDescriptorMethod } from './methodMakers/fileDescriptorMethod';

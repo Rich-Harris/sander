@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'graceful-fs';
 import resolvePath from '../utils/resolvePath';
 
 export function exists () {

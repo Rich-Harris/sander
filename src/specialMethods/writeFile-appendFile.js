@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'graceful-fs';
 import { dirname } from 'path';
 import mkdirp from 'mkdirp';
 import resolvePath from '../utils/resolvePath';

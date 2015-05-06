@@ -1,5 +1,5 @@
 import { dirname } from 'path';
-import * as fs from 'fs';
+import * as fs from 'graceful-fs';
 import mkdirp from 'mkdirp';
 import resolvePath from '../utils/resolvePath';
 import resolvePathAndOptions from '../utils/resolvePathAndOptions';

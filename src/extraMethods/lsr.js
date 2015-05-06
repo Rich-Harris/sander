@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'graceful-fs';
 import { sep } from 'path';
 import resolvePath from '../utils/resolvePath';
 
