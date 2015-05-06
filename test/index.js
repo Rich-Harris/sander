@@ -87,6 +87,17 @@ describe( 'sander', function () {
 				});
 		});
 
+		it( 'creates intermediate directories', function () {
+			return sander.symlinkOrCopy( 'input', 'dir' ).to( 'output/a/b/c' )
+				.then( function () {
+					var stats = fs.statSync( 'output/a/b/c' );
+					assert.ok( stats.isDirectory() );
+
+					var lstats = fs.lstatSync( 'output/a/b/c' );
+					assert.ok( lstats.isSymbolicLink() );
+				});
+		});
+
 		it( 'symlinks a directory synchronously', function () {
 			sander.symlinkOrCopySync( 'input', 'dir' ).to( 'output' );
 
@@ -94,6 +105,16 @@ describe( 'sander', function () {
 			assert.ok( stats.isDirectory() );
 
 			var lstats = fs.lstatSync( 'output' );
+			assert.ok( lstats.isSymbolicLink() );
+		});
+
+		it( 'creates intermediate directories when symlinking synchronously', function () {
+			sander.symlinkOrCopySync( 'input', 'dir' ).to( 'output/a/b/c' );
+
+			var stats = fs.statSync( 'output/a/b/c' );
+			assert.ok( stats.isDirectory() );
+
+			var lstats = fs.lstatSync( 'output/a/b/c' );
 			assert.ok( lstats.isSymbolicLink() );
 		});
 

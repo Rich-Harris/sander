@@ -1,4 +1,6 @@
+import { dirname } from 'path';
 import * as fs from 'fs';
+import mkdirp from 'mkdirp';
 import resolvePath from '../utils/resolvePath';
 import resolvePathAndOptions from '../utils/resolvePathAndOptions';
 
@@ -10,11 +12,17 @@ export function symlink () {
 			const { options, resolvedPath: dest } = resolvePathAndOptions( arguments );
 
 			return new Promise( ( fulfil, reject ) => {
-				fs.symlink( src, dest, options.type, err => {
+				mkdirp( dirname( dest ), err => {
 					if ( err ) {
 						reject( err );
 					} else {
-						fulfil();
+						fs.symlink( src, dest, options.type, err => {
+							if ( err ) {
+								reject( err );
+							} else {
+								fulfil();
+							}
+						});
 					}
 				});
 			});
@@ -28,6 +36,7 @@ export function symlinkSync () {
 	return {
 		to () {
 			const { options, resolvedPath: dest } = resolvePathAndOptions( arguments );
+			mkdirp.sync( dirname( dest ) );
 			return fs.symlinkSync( src, dest, options.type );
 		}
 	};
