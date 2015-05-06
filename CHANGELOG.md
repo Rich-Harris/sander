@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.3
+
+* Reinstate graceful-fs to avoid EMFILE errors
+
 ## 0.3.2
 
 * Create intermediate directories when symlinking
