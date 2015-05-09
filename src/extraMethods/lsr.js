@@ -1,60 +1,49 @@
-import * as fs from 'graceful-fs';
-import { sep } from 'path';
+import * as fs from 'fs';
+import { resolve, sep } from 'path';
 import resolvePath from '../utils/resolvePath';
+
+function walk ( dir, callback ) {
+	let results = [];
+
+	fs.readdir( dir, ( err, files ) => {
+		if ( err ) return callback( err );
+
+		let pending = files.length;
+		if ( !pending ) return callback( null, results );
+
+		files.forEach( file => {
+			file = resolve( dir, file );
+
+			fs.stat( file, ( err, stats ) => {
+				if ( stats && stats.isDirectory() ) {
+					walk( file, ( err, res ) => {
+						results = results.concat( res );
+						if ( !--pending ) callback( null, results );
+					});
+				} else {
+					results.push( file );
+					if ( !--pending ) callback( null, results );
+				}
+			});
+		});
+	});
+};
 
 export function lsr () {
 	const basedir = resolvePath( arguments );
 
-	let result = [];
-
-	function processdir ( dir, cb ) {
-		fs.readdir( dir, ( err, files ) => {
-			if ( err ) {
-				return cb( err );
-			}
-
-			let remaining = files.length;
-
-			if ( !remaining ) {
-				return cb();
-			}
-
-			files = files.map( file => dir + sep + file );
-
-			function check ( err ) {
-				if ( err ) {
-					cb( err );
-				}
-
-				else if ( !--remaining ) {
-					cb();
-				}
-			}
-
-			files.forEach( file => {
-				fs.stat( file, ( err, stats ) => {
-					if ( err ) {
-						cb( err );
-					} else {
-						if ( stats.isDirectory() ) {
-							processdir( file, check );
-						} else {
-							result.push( file.replace( basedir + sep, '' ) );
-							check();
-						}
-					}
-				});
-			});
-		});
-	}
-
 	return new Promise( ( fulfil, reject ) => {
-		processdir( basedir, err => {
-			if ( err ) {
-				reject( err );
-			} else {
-				fulfil( result );
+		walk( basedir, function ( err, result ) {
+			if ( err ) return reject( err );
+
+			// files should be relative to basedir
+			const index = basedir.length + 1;
+			let i = result.length;
+			while ( i-- ) {
+				result[i] = result[i].substring( index );
 			}
+
+			fulfil( result );
 		});
 	});
 }
