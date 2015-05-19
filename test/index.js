@@ -4,6 +4,8 @@ var assert = require( 'assert' );
 var crc32 = require( 'buffer-crc32' );
 var sander = require( '../' );
 
+var isWindows = process.platform === 'win32';
+
 process.chdir( __dirname );
 
 describe( 'sander', function () {
@@ -79,43 +81,51 @@ describe( 'sander', function () {
 		it( 'symlinks a directory', function () {
 			return sander.symlinkOrCopy( 'input', 'dir' ).to( 'output' )
 				.then( function () {
-					var stats = fs.statSync( 'output' );
-					assert.ok( stats.isDirectory() );
-
-					var lstats = fs.lstatSync( 'output' );
-					assert.ok( lstats.isSymbolicLink() );
+					if (isWindows) {
+						var stats = fs.statSync( 'output' );
+						assert.ok( stats.isDirectory() );
+					} else {
+						var lstats = fs.lstatSync( 'output' );
+						assert.ok( lstats.isSymbolicLink() );
+					}
 				});
 		});
 
 		it( 'creates intermediate directories', function () {
 			return sander.symlinkOrCopy( 'input', 'dir' ).to( 'output/a/b/c' )
 				.then( function () {
-					var stats = fs.statSync( 'output/a/b/c' );
-					assert.ok( stats.isDirectory() );
-
-					var lstats = fs.lstatSync( 'output/a/b/c' );
-					assert.ok( lstats.isSymbolicLink() );
+					if (isWindows) {
+						var stats = fs.statSync( 'output/a/b/c' );
+						assert.ok( stats.isDirectory() );
+					} else {
+						var lstats = fs.lstatSync( 'output/a/b/c' );
+						assert.ok( lstats.isSymbolicLink() );
+					}
 				});
 		});
 
 		it( 'symlinks a directory synchronously', function () {
 			sander.symlinkOrCopySync( 'input', 'dir' ).to( 'output' );
 
-			var stats = fs.statSync( 'output' );
-			assert.ok( stats.isDirectory() );
-
-			var lstats = fs.lstatSync( 'output' );
-			assert.ok( lstats.isSymbolicLink() );
+			if (isWindows) {
+				var stats = fs.statSync( 'output' );
+				assert.ok( stats.isDirectory() );
+			} else {
+				var lstats = fs.lstatSync( 'output' );
+				assert.ok( lstats.isSymbolicLink() );
+			}
 		});
 
 		it( 'creates intermediate directories when symlinking synchronously', function () {
 			sander.symlinkOrCopySync( 'input', 'dir' ).to( 'output/a/b/c' );
 
-			var stats = fs.statSync( 'output/a/b/c' );
-			assert.ok( stats.isDirectory() );
-
-			var lstats = fs.lstatSync( 'output/a/b/c' );
-			assert.ok( lstats.isSymbolicLink() );
+			if (isWindows) {
+				var stats = fs.statSync( 'output/a/b/c' );
+				assert.ok( stats.isDirectory() );
+			} else {
+				var lstats = fs.lstatSync( 'output/a/b/c' );
+				assert.ok( lstats.isSymbolicLink() );
+			}
 		});
 
 		// TODO override environment so that it thinks we're in Windows and copies instead...
