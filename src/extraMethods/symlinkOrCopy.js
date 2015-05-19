@@ -33,7 +33,7 @@ export function symlinkOrCopy () {
 export function symlinkOrCopySync () {
 	if ( isWindows ) {
 		const { resolvedPath: src, options: readOptions } = resolvePathAndOptions( arguments );
-		( statSync( src ).isDirectory() ? copydirSync : copyFileSync ).apply( null, arguments );
+		return ( statSync( src ).isDirectory() ? copydirSync : copyFileSync ).apply( null, arguments );
 	}
 
 	return symlinkSync.apply( null, arguments );
