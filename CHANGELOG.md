@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.4
+
+* Fix `symlinkOrCopy` on Windows ([#4](https://github.com/Rich-Harris/sander/pull/4)) - thanks [@clintwood](https://github.com/clintwood)
+
 ## 0.3.3
 
 * Reinstate graceful-fs to avoid EMFILE errors
