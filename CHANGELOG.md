@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.5
+
+* `sander.writeFile` and `sander.appendFile`, and their sync equivalents, can take a final `options` argument specifying e.g. encoding ([#6](https://github.com/Rich-Harris/sander/pull/6))
+
 ## 0.3.4
 
 * Fix `symlinkOrCopy` on Windows ([#4](https://github.com/Rich-Harris/sander/pull/4)) - thanks [@clintwood](https://github.com/clintwood)
