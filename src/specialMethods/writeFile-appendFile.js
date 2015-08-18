@@ -10,30 +10,26 @@ export const writeFileSync = syncMethod( 'writeFileSync' );
 export const appendFileSync = syncMethod( 'appendFileSync' );
 
 function normaliseArguments ( args ) {
-	let i = args.length;
-	const data = args[ --i ];
+	args = Array.prototype.slice.call( args, 0 );
+	let opts = {};
 
-	let pathargs = new Array( i );
-
-	while ( i-- ) {
-		pathargs[i] = args[i];
+	if ( typeof args[ args.length - 1 ] === 'object' && Object.prototype.toString.call( args[ args.length - 1 ] ) !== '[object Buffer]' ) {
+		opts = args.pop();
 	}
 
-	const dest = resolvePath( pathargs );
-
-	return { dest, data };
+	return { opts, data: args.pop(), dest: resolvePath( args ) };
 }
 
 function asyncMethod ( methodName ) {
 	return function () {
-		const { dest, data } = normaliseArguments( arguments );
+		const { dest, data, opts } = normaliseArguments( arguments );
 
 		return new Promise( ( fulfil, reject ) => {
 			mkdirp( dirname( dest ), err => {
 				if ( err ) {
 					reject( err );
 				} else {
-					fs[ methodName ]( dest, data, err => {
+					fs[ methodName ]( dest, data, opts, err => {
 						if ( err ) {
 							reject( err );
 						} else {
