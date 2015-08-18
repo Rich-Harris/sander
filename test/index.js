@@ -40,6 +40,19 @@ describe( 'sander', function () {
 		});
 	});
 
+	describe( 'writeFile', function () {
+		it( 'allows options to be provided', function () {
+			var buf = new Buffer( [ 32, 32, 192, 192, 32, 32 ] );
+			return sander.writeFile( 'output', 'dir', 'out.bin', buf, { encoding: null } ).then( function () {
+				return sander.readFile( 'output', 'dir', 'out.bin', { encoding: null } ).then( function (b) {
+					for ( var i = 0; i < b.length; i++ ) {
+						assert.equal( buf[i], b[i] );
+					}
+				});
+			});
+		});
+	});
+
 	describe( 'copydir', function () {
 		it( 'copies a directory', function () {
 			return sander.copydir( 'input', 'dir' ).to( 'output' ).then( function () {
