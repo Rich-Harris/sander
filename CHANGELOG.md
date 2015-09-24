@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.6
+
+* In Node.js 4, buffers are created in JavaScript – replace `!== '[object Buffer]'` check with `=== '[object Object]'`
+
 ## 0.3.5
 
 * `sander.writeFile` and `sander.appendFile`, and their sync equivalents, can take a final `options` argument specifying e.g. encoding ([#6](https://github.com/Rich-Harris/sander/pull/6))
