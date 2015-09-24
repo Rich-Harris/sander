@@ -13,7 +13,7 @@ function normaliseArguments ( args ) {
 	args = Array.prototype.slice.call( args, 0 );
 	let opts = {};
 
-	if ( typeof args[ args.length - 1 ] === 'object' && Object.prototype.toString.call( args[ args.length - 1 ] ) !== '[object Buffer]' ) {
+	if ( typeof args[ args.length - 1 ] === 'object' && Object.prototype.toString.call( args[ args.length - 1 ] ) === '[object Object]' ) {
 		opts = args.pop();
 	}
 
