@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.7
+
+* Previous version introduced a bug that affected older versions of Node.js – now fixed
+
 ## 0.3.6
 
 * In Node.js 4, buffers are created in JavaScript – replace `!== '[object Buffer]'` check with `=== '[object Object]'`
