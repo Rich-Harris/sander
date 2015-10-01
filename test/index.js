@@ -51,6 +51,12 @@ describe( 'sander', function () {
 				});
 			});
 		});
+
+		it( 'resolves with the written data', function () {
+			return sander.writeFile( 'output', 'TEST DATA' ).then( function ( data ) {
+				assert.equal( data, 'TEST DATA' );
+			});
+		});
 	});
 
 	describe( 'copydir', function () {

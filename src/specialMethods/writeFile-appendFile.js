@@ -33,7 +33,7 @@ function asyncMethod ( methodName ) {
 						if ( err ) {
 							reject( err );
 						} else {
-							fulfil();
+							fulfil( data );
 						}
 					});
 				}
