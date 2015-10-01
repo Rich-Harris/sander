@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.8
+
+* `sander.writeFile` and `sander.appendFile` return promises that resolve with the data written or appended
+
 ## 0.3.7
 
 * Previous version introduced a bug that affected older versions of Node.js – now fixed
