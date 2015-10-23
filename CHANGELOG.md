@@ -1,5 +1,9 @@
 # changelog
 
+## 0.4.0
+
+* Add ES6 build
+
 ## 0.3.8
 
 * `sander.writeFile` and `sander.appendFile` return promises that resolve with the data written or appended

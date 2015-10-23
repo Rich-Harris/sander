@@ -2,7 +2,7 @@
   "name": "sander",
   "description": "Promise-based power tool for common filesystem tasks",
   "author": "Rich Harris",
-  "version": "0.3.8",
+  "version": "0.4.0",
   "license": "MIT",
   "repository": "https://github.com/rich-harris/sander",
   "dependencies": {
@@ -11,8 +11,8 @@
     "rimraf": "^2.2.8",
     "graceful-fs": "^3.0.4"
   },
-  "main": "dist/sander.js",
-  "jsnext:main": "src/sander.js",
+  "main": "dist/sander.cjs.js",
+  "jsnext:main": "dist/sander.es6.js",
   "devDependencies": {
     "buffer-crc32": "^0.2.3",
     "gobble": "^0.9.2",
