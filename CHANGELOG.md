@@ -1,5 +1,25 @@
 # changelog
 
+## 0.3.8
+
+* `sander.writeFile` and `sander.appendFile` return promises that resolve with the data written or appended
+
+## 0.3.7
+
+* Previous version introduced a bug that affected older versions of Node.js – now fixed
+
+## 0.3.6
+
+* In Node.js 4, buffers are created in JavaScript – replace `!== '[object Buffer]'` check with `=== '[object Object]'`
+
+## 0.3.5
+
+* `sander.writeFile` and `sander.appendFile`, and their sync equivalents, can take a final `options` argument specifying e.g. encoding ([#6](https://github.com/Rich-Harris/sander/pull/6))
+
+## 0.3.4
+
+* Fix `symlinkOrCopy` on Windows ([#4](https://github.com/Rich-Harris/sander/pull/4)) - thanks [@clintwood](https://github.com/clintwood)
+
 ## 0.3.3
 
 * Reinstate graceful-fs to avoid EMFILE errors
