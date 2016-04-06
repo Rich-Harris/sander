@@ -6,10 +6,10 @@
   "license": "MIT",
   "repository": "https://github.com/rich-harris/sander",
   "dependencies": {
-    "es6-promise": "^3.0.2",
+    "es6-promise": "^3.1.2",
     "mkdirp": "^0.5.1",
-    "rimraf": "^2.4.3",
-    "graceful-fs": "^4.1.2"
+    "rimraf": "^2.5.2",
+    "graceful-fs": "^4.1.3"
   },
   "main": "dist/sander.cjs.js",
   "jsnext:main": "dist/sander.es6.js",
@@ -18,7 +18,7 @@
     "gobble": "^0.10.2",
     "gobble-cli": "^0.6.0",
     "gobble-rollup-babel": "^0.6.1",
-    "mocha": "^2.3.3"
+    "mocha": "^2.4.5"
   },
   "scripts": {
     "test": "mocha",
