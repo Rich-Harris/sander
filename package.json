@@ -15,16 +15,16 @@
   "jsnext:main": "dist/sander.es6.js",
   "devDependencies": {
     "buffer-crc32": "^0.2.3",
-    "gobble": "^0.9.2",
-    "gobble-babel": "^5.1.0",
-    "gobble-cli": "^0.4.1",
-    "mocha": "^2.2.4"
+    "mocha": "^2.2.4",
+    "rollup-plugin-buble": "^0.5.0"
   },
   "scripts": {
     "test": "mocha",
-    "pretest": "npm run build",
-    "build": "gobble build -f dist",
-    "prepublish": "npm run build && npm test"
+    "pretest": "npm run build:cjs",
+    "build": "npm run build:cjs && npm run build:es",
+    "build:cjs": "rollup -c -f cjs -o dist/sander.cjs.js",
+    "build:es": "rollup -c -f es6 -o dist/sander.es.js",
+    "prepublish": "npm test && npm run build:es"
   },
   "files": [
     "src",
