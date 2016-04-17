@@ -1,5 +1,10 @@
 # changelog
 
+## 0.5.0
+
+* Update dependencies
+* Simplify build process
+
 ## 0.4.0
 
 * Add ES6 build
