@@ -2,7 +2,7 @@
   "name": "sander",
   "description": "Promise-based power tool for common filesystem tasks",
   "author": "Rich Harris",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "repository": "https://github.com/rich-harris/sander",
   "dependencies": {
@@ -16,7 +16,8 @@
   "devDependencies": {
     "buffer-crc32": "^0.2.5",
     "mocha": "^2.4.5",
-    "rollup-plugin-buble": "^0.5.0"
+    "rollup": "^0.26.2",
+    "rollup-plugin-buble": "^0.7.0"
   },
   "scripts": {
     "test": "mocha",
