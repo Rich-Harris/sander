@@ -6,8 +6,6 @@ import { asyncFileDescriptorMethod } from './methodMakers/fileDescriptorMethod';
 // standard async methods
 export const chmod = asyncMethod( 'chmod' );
 export const chown = asyncMethod( 'chown' );
-export const createReadStream = asyncMethod( 'createReadStream' );
-export const createWriteStream = asyncMethod( 'createWriteStream' );
 export const lchmod = asyncMethod( 'lchmod' );
 export const lchown = asyncMethod( 'lchown' );
 export const lstat = asyncMethod( 'lstat' );
