@@ -1,5 +1,10 @@
 # changelog
 
+## 0.6.0
+
+* Remove duplicate exports ([#10](https://github.com/Rich-Harris/sander/issues/10))
+* Remove `Promise` polyfill – is no longer necessary
+
 ## 0.5.1
 
 * Update dependencies

@@ -2,7 +2,7 @@
   "name": "sander",
   "description": "Promise-based power tool for common filesystem tasks",
   "author": "Rich Harris",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "license": "MIT",
   "repository": "https://github.com/rich-harris/sander",
   "dependencies": {
