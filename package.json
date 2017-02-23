@@ -5,6 +5,11 @@
   "version": "0.6.0",
   "license": "MIT",
   "repository": "https://github.com/rich-harris/sander",
+  "keywords": [
+    "file",
+    "filesystem",
+    "fs"
+  ],
   "dependencies": {
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.2",
