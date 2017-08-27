@@ -36,6 +36,10 @@ export function copydir () {
 							const destpath = dest + sep + filename;
 
 							fs.stat( srcpath, ( err, stats ) => {
+								if ( err ) {
+									return cb( err );
+								}
+
 								var readStream, writeStream;
 
 								if ( stats.isDirectory() ) {
