@@ -1,6 +1,6 @@
 import { sep } from 'path';
 import * as fs from 'graceful-fs';
-import mkdirp from 'mkdirp';
+import { mkdirp , mkdirpSync} from 'mkdirp';
 import resolvePathAndOptions from '../utils/resolvePathAndOptions';
 
 export function copydir () {
@@ -11,50 +11,50 @@ export function copydir () {
 			const { resolvedPath: dest, options: writeOptions } = resolvePathAndOptions( arguments );
 
 			function copydir ( src, dest, cb ) {
-				mkdirp( dest, err => {
-					if ( err ) return cb( err );
+				mkdirp( dest )
+					.then( () => {
+						fs.readdir( src, ( err, files ) => {
+							if ( err ) return cb( err );
 
-					fs.readdir( src, ( err, files ) => {
-						if ( err ) return cb( err );
+							let remaining = files.length;
 
-						let remaining = files.length;
+							if ( !remaining ) return cb();
 
-						if ( !remaining ) return cb();
-
-						function check ( err ) {
-							if ( err ) {
-								return cb( err );
-							}
-
-							if ( !--remaining ) {
-								cb();
-							}
-						}
-
-						files.forEach( function ( filename ) {
-							const srcpath = src + sep + filename;
-							const destpath = dest + sep + filename;
-
-							fs.stat( srcpath, ( err, stats ) => {
-								var readStream, writeStream;
-
-								if ( stats.isDirectory() ) {
-									return copydir( srcpath, destpath, check );
+							function check ( err ) {
+								if ( err ) {
+									return cb( err );
 								}
 
-								readStream = fs.createReadStream( srcpath, readOptions );
-								writeStream = fs.createWriteStream( destpath, writeOptions );
+								if ( !--remaining ) {
+									cb();
+								}
+							}
 
-								readStream.on( 'error', cb );
-								writeStream.on( 'error', cb );
+							files.forEach( function ( filename ) {
+								const srcpath = src + sep + filename;
+								const destpath = dest + sep + filename;
 
-								writeStream.on( 'close', check );
+								fs.stat( srcpath, ( err, stats ) => {
+									var readStream, writeStream;
 
-								readStream.pipe( writeStream );
+									if ( stats.isDirectory() ) {
+										return copydir( srcpath, destpath, check );
+									}
+
+									readStream = fs.createReadStream( srcpath, readOptions );
+									writeStream = fs.createWriteStream( destpath, writeOptions );
+
+									readStream.on( 'error', cb );
+									writeStream.on( 'error', cb );
+
+									writeStream.on( 'close', check );
+
+									readStream.pipe( writeStream );
+								});
 							});
 						});
-					});
-				});
+					})
+					.catch(cb);
 			}
 
 			return new Promise( ( fulfil, reject ) => {
@@ -78,7 +78,7 @@ export function copydirSync () {
 			const { resolvedPath: dest, options: writeOptions } = resolvePathAndOptions( arguments );
 
 			function copydir ( src, dest ) {
-				mkdirp.sync( dest );
+				mkdirpSync( dest );
 
 				fs.readdirSync( src ).forEach( filename => {
 					const srcpath = src + sep + filename;

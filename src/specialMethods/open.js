@@ -1,6 +1,6 @@
 import { dirname } from 'path';
 import * as fs from 'graceful-fs';
-import mkdirp from 'mkdirp';
+import { mkdirp } from 'mkdirp';
 import resolvePath from '../utils/resolvePath';
 
 function normaliseArguments ( args ) {
@@ -67,13 +67,11 @@ export function open () {
 
 		// create dirs if necessary
 		if ( /^[wa]/.test( flags ) ) {
-			mkdirp( dirname( src ), err => {
-				if ( err ) {
-					reject( err );
-				} else {
+			mkdirp( dirname( src ) )
+				.then( () => {
 					open();
-				}
-			});
+				})
+				.catch( reject );
 		} else {
 			open();
 		}

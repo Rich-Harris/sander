@@ -1,6 +1,6 @@
 import * as fs from 'graceful-fs';
 import { dirname } from 'path';
-import mkdirp from 'mkdirp';
+import { mkdirpSync } from 'mkdirp';
 import resolvePathAndOptions from '../utils/resolvePathAndOptions';
 
 export function createReadStream () {
@@ -11,6 +11,6 @@ export function createReadStream () {
 export function createWriteStream () {
 	const { resolvedPath, options } = resolvePathAndOptions( arguments );
 
-	mkdirp.sync( dirname( resolvedPath ) );
+	mkdirpSync( dirname( resolvedPath ) );
 	return fs.createWriteStream( resolvedPath, options );
 }

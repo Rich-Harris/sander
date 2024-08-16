@@ -1,6 +1,6 @@
 import * as fs from 'graceful-fs';
 import { dirname } from 'path';
-import mkdirp from 'mkdirp';
+import { mkdirp, mkdirpSync } from 'mkdirp';
 import resolvePathAndOptions from '../utils/resolvePathAndOptions';
 
 export function copyFile () {
@@ -11,10 +11,8 @@ export function copyFile () {
 			const { resolvedPath: dest, options: writeOptions } = resolvePathAndOptions( arguments );
 
 			return new Promise( ( fulfil, reject ) => {
-				mkdirp( dirname( dest ), err => {
-					if ( err ) {
-						reject( err );
-					} else {
+				mkdirp( dirname( dest ) )
+					.then( () => {
 						const readStream = fs.createReadStream( src, readOptions );
 						const writeStream = fs.createWriteStream( dest, writeOptions );
 
@@ -24,8 +22,8 @@ export function copyFile () {
 						writeStream.on( 'close', fulfil );
 
 						readStream.pipe( writeStream );
-					}
-				});
+					})
+					.catch( reject );
 			});
 		}
 	};
@@ -40,7 +38,7 @@ export function copyFileSync () {
 
 			const data = fs.readFileSync( src, readOptions );
 
-			mkdirp.sync( dirname( dest ) );
+			mkdirpSync( dirname( dest ) );
 			fs.writeFileSync( dest, data, writeOptions );
 		}
 	};

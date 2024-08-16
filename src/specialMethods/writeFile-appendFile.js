@@ -1,6 +1,6 @@
 import * as fs from 'graceful-fs';
 import { dirname } from 'path';
-import mkdirp from 'mkdirp';
+import { mkdirp, mkdirpSync } from 'mkdirp';
 import resolvePath from '../utils/resolvePath';
 
 export const writeFile = asyncMethod( 'writeFile' );
@@ -25,10 +25,8 @@ function asyncMethod ( methodName ) {
 		const { dest, data, opts } = normaliseArguments( arguments );
 
 		return new Promise( ( fulfil, reject ) => {
-			mkdirp( dirname( dest ), err => {
-				if ( err ) {
-					reject( err );
-				} else {
+			mkdirp( dirname( dest ) )
+				.then( () => {
 					fs[ methodName ]( dest, data, opts, err => {
 						if ( err ) {
 							reject( err );
@@ -36,8 +34,8 @@ function asyncMethod ( methodName ) {
 							fulfil( data );
 						}
 					});
-				}
-			});
+				})
+				.catch( reject );
 		});
 	};
 }
@@ -46,7 +44,7 @@ function syncMethod ( methodName ) {
 	return function () {
 		const { dest, data } = normaliseArguments( arguments );
 
-		mkdirp.sync( dirname( dest ) );
+		mkdirpSync( dirname( dest ) );
 		return fs[ methodName ]( dest, data );
 	};
 }
